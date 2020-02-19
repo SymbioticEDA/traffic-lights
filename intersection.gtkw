@@ -1,0 +1,56 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Wed Feb 19 15:20:15 2020
+[*]
+[dumpfile] "/home/claire/Temp/traffic/simplecover/engine_0/trace0.vcd"
+[dumpfile_mtime] "Wed Feb 19 15:15:26 2020"
+[dumpfile_size] 5919
+[savefile] "/home/claire/Temp/traffic/intersection.gtkw"
+[timestart] 0
+[size] 1000 826
+[pos] 719 -53
+*-4.258203 15 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] intersection.
+[sst_width] 223
+[signals_width] 174
+[sst_expanded] 1
+[sst_vpaned_height] 230
+@28
+intersection.clock
+@29
+intersection.reset
+@200
+-
+@28
+intersection.pedestrian_button
+intersection.turn_sensor
+@200
+-
+@28
+intersection.pedestrian_request
+intersection.up_request
+intersection.down_request
+intersection.turn_request
+@200
+-
+@28
+intersection.pedestrian_active
+intersection.up_active
+intersection.down_active
+intersection.turn_active
+@200
+-
+@28
+intersection.pedestrian_blocked
+intersection.up_blocked
+intersection.down_blocked
+intersection.turn_blocked
+@200
+-
+@28
+intersection.pedestrian_green
+intersection.up_green
+intersection.down_green
+intersection.turn_green
+[pattern_trace] 1
+[pattern_trace] 0

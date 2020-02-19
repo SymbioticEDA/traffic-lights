@@ -17,8 +17,8 @@ module trafficlight (
 `endif
 
 	localparam [7:0] STATE_IDLE = 0;
-	localparam [7:0] STATE_WAIT = 0;
-	localparam [7:0] STATE_GREEN = 0;
+	localparam [7:0] STATE_WAIT = 1;
+	localparam [7:0] STATE_GREEN = 2;
 
 	always @(posedge clock) begin
 		if (reset) begin
