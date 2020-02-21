@@ -18,22 +18,21 @@ module liveness (
 		reset_req <= 0;
 	end
 
+	default clocking @(posedge clock); endclocking
+	default disable iff (reset);
+
 	assert property (
-		@(posedge clock) disable iff (reset)
 		pedestrian_button |-> ##[1:50] pedestrian_green
 	);
 
 	assert property (
-		@(posedge clock) disable iff (reset)
 		turn_sensor |-> ##[1:50] turn_green
 	);
 
 	assert property (
-		@(posedge clock) disable iff (reset)
 		##[1:50] up_green
 	);
 	assert property (
-		@(posedge clock) disable iff (reset)
 		##[1:50] down_green
 	);
 endmodule
