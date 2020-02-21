@@ -32,6 +32,43 @@ module intersection (
 	wire turn_blocked;
 	wire turn_active;
 
+	// ----- priority monitor -----
+
+	reg [1:0] priority_pedestrian;
+	reg [1:0] priority_up;
+	reg [1:0] priority_down;
+	reg [1:0] priority_turn;
+
+	reg [1:0] priority_ceil;
+
+	always @* begin
+		priority_ceil = 0;
+		if (pedestrian_green && priority_pedestrian != 0) priority_ceil = priority_pedestrian;
+		if (        up_green && priority_up         != 0) priority_ceil = priority_up;
+		if (      down_green && priority_down       != 0) priority_ceil = priority_down;
+		if (      turn_green && priority_turn       != 0) priority_ceil = priority_turn;
+	end
+
+	always @(posedge clock) begin
+		priority_pedestrian <= priority_pedestrian + (priority_pedestrian < priority_ceil);
+		priority_up         <= priority_up         + (priority_up         < priority_ceil);
+		priority_down       <= priority_down       + (priority_down       < priority_ceil);
+
+		if (pedestrian_green) priority_pedestrian <= 0;
+		if (        up_green) priority_up         <= 0;
+		if (      down_green) priority_down       <= 0;
+		if (      turn_green) priority_turn       <= 0;
+
+		if (reset) begin
+			priority_pedestrian <= 0;
+			priority_up <= 1;
+			priority_down <= 2;
+			priority_turn <= 3;
+		end
+	end
+
+	// ----- arbiter control -----
+
 	assign pedestrian_request = pedestrian_button;
 	assign pedestrian_blocked = up_active || down_active;
 
@@ -43,6 +80,8 @@ module intersection (
 
 	assign turn_request = turn_sensor;
 	assign turn_blocked = down_active;
+
+	// ----- lights -----
 
 	trafficlight tl_pedestrian (
 		.clock   (           clock  ),
