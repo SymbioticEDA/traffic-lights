@@ -1,0 +1,32 @@
+[*]
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Fri Feb 21 10:19:52 2020
+[*]
+[dumpfile] "/home/matt/work/fpga/symbiotic/beginner-course/traffic_lights/safety/engine_0/trace.vcd"
+[dumpfile_mtime] "Fri Feb 21 10:19:41 2020"
+[dumpfile_size] 831
+[savefile] "/home/matt/work/fpga/symbiotic/beginner-course/traffic_lights/safety.gtkw"
+[timestart] 0
+[size] 2507 1538
+[pos] -1 -1
+*-3.350125 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 263
+[signals_width] 270
+[sst_expanded] 1
+[sst_vpaned_height] 475
+@420
+smt_step
+@28
+smt_clock
+safety.clock
+safety.reset_req
+@200
+-
+@28
+safety.up_green
+safety.down_green
+safety.pedestrian_green
+@29
+safety.turn_green
+[pattern_trace] 1
+[pattern_trace] 0
