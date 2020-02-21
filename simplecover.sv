@@ -23,25 +23,30 @@ module simplecover (
 	cover property (down_green);
 	cover property (turn_green);
 
-	property signal_pair(first, second);
+	property signal_seq(first, second);
 		(first && !second) ##[+] (!first && second);
 	endproperty
 
-	pair_pedestrian_up:   cover property (signal_pair(pedestrian_green, up_green));
-	pair_pedestrian_down: cover property (signal_pair(pedestrian_green, down_green));
-	pair_pedestrian_turn: cover property (signal_pair(pedestrian_green, turn_green));
+	property signal_pair(first, second);
+		(first && second);
+	endproperty
 
-	pair_up_pedestrian:   cover property (signal_pair(up_green, pedestrian_green));
-	pair_up_down:         cover property (signal_pair(up_green, down_green));
-	pair_up_turn:         cover property (signal_pair(up_green, turn_green));
+	pair_pedestrian_up:   cover property (signal_seq(pedestrian_green, up_green));
+	pair_pedestrian_down: cover property (signal_seq(pedestrian_green, down_green));
+	pair_pedestrian_turn: cover property (signal_seq(pedestrian_green, turn_green));
 
-	pair_down_pedestrian: cover property (signal_pair(down_green, pedestrian_green));
-	pair_down_up:         cover property (signal_pair(down_green, up_green));
-	pair_down_turn:       cover property (signal_pair(down_green, turn_green));
+	pair_up_pedestrian:   cover property (signal_seq(up_green, pedestrian_green));
+	pair_up_down:         cover property (signal_seq(up_green, down_green));
+	pair_up_turn:         cover property (signal_seq(up_green, turn_green));
 
-//	pair_turn_pedestrian: cover property (signal_pair(turn_green, pedestrian_green));   <-- BUG?
-	pair_turn_up:         cover property (signal_pair(turn_green, up_green));
-	pair_turn_down:       cover property (signal_pair(turn_green, down_green));
+	pair_down_pedestrian: cover property (signal_seq(down_green, pedestrian_green));
+	pair_down_up:         cover property (signal_seq(down_green, up_green));
+	pair_down_turn:       cover property (signal_seq(down_green, turn_green));
+
+	pair_turn_pedestrian: cover property (signal_pair(turn_green, pedestrian_green));   // if pedestrians are crossing then turn will always be green
+	pair_turn_up:         cover property (signal_seq(turn_green, up_green));
+	pair_turn_down:       cover property (signal_seq(turn_green, down_green));
+
 endmodule
 
 bind intersection simplecover checker_inst (.*);
