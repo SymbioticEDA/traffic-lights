@@ -21,8 +21,8 @@ module safety (
 	default clocking @(posedge clock); endclocking
 	default disable iff (reset);
 
-    assert property (pedestrian_green |-> (!up_green && !down_green));
-	assert property (turn_green |-> !down_green);
+    pedestrian_safe: assert property (pedestrian_green |-> (!up_green && !down_green));
+	turn_safe: assert property (turn_green |-> !down_green);
 
 endmodule
 
