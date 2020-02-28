@@ -18,68 +18,66 @@ module intersection (
 );
 	wire pedestrian_request;
 	wire pedestrian_blocked;
-	wire pedestrian_active;
+	wire pedestrian_waiting;
 
 	wire up_request;
 	wire up_blocked;
-	wire up_active;
+	wire up_waiting;
 
 	wire down_request;
 	wire down_blocked;
-	wire down_active;
+	wire down_waiting;
 
 	wire turn_request;
 	wire turn_blocked;
-	wire turn_active;
+	wire turn_waiting;
 
 	// ----- priority monitor -----
 
-	reg [1:0] priority_pedestrian;
-	reg [1:0] priority_up;
-	reg [1:0] priority_down;
-	reg [1:0] priority_turn;
-
-	reg [1:0] priority_ceil;
-
-	always @* begin
-		priority_ceil = 0;
-		if (pedestrian_green && priority_pedestrian != 0) priority_ceil = priority_pedestrian;
-		if (        up_green && priority_up         != 0) priority_ceil = priority_up;
-		if (      down_green && priority_down       != 0) priority_ceil = priority_down;
-		if (      turn_green && priority_turn       != 0) priority_ceil = priority_turn;
-	end
+	// prioritize first when 0, second when 1
+	reg pri_pedestrian_up;
+	reg pri_pedestrian_down;
+	reg pri_turn_down;
 
 	always @(posedge clock) begin
-		priority_pedestrian <= priority_pedestrian + (priority_pedestrian < priority_ceil);
-		priority_up         <= priority_up         + (priority_up         < priority_ceil);
-		priority_down       <= priority_down       + (priority_down       < priority_ceil);
-
-		if (pedestrian_green) priority_pedestrian <= 0;
-		if (        up_green) priority_up         <= 0;
-		if (      down_green) priority_down       <= 0;
-		if (      turn_green) priority_turn       <= 0;
-
+		if (pedestrian_green) begin
+			pri_pedestrian_up <= 1;
+			pri_pedestrian_down <= 1;
+		end
+		if (up_green) begin
+			pri_pedestrian_up <= 0;
+		end
+		if (down_green) begin
+			pri_pedestrian_down <= 0;
+			pri_turn_down <= 0;
+		end
+		if (turn_green) begin
+			pri_turn_down <= 1;
+		end
 		if (reset) begin
-			priority_pedestrian <= 0;
-			priority_up <= 1;
-			priority_down <= 2;
-			priority_turn <= 3;
+			pri_pedestrian_up <= 0;
+			pri_pedestrian_down <= 0;
+			pri_turn_down <= 0;
 		end
 	end
 
 	// ----- arbiter control -----
 
 	assign pedestrian_request = pedestrian_button;
-	assign pedestrian_blocked = up_active || down_active;
+	assign pedestrian_blocked =
+			(up_green || (up_waiting && pri_pedestrian_up)) ||
+			(down_green || (down_waiting && pri_pedestrian_down));
 
 	assign up_request = 1;
-	assign up_blocked = pedestrian_active;
+	assign up_blocked = pedestrian_green || (pedestrian_waiting && !pri_pedestrian_up);
 
 	assign down_request = 1;
-	assign down_blocked = pedestrian_active || turn_active;
+	assign down_blocked =
+			(pedestrian_green || (pedestrian_waiting && !pri_pedestrian_down)) ||
+			(turn_green || (turn_waiting && !pri_turn_down));
 
 	assign turn_request = turn_sensor;
-	assign turn_blocked = down_active;
+	assign turn_blocked = down_green || (down_waiting && pri_turn_down);
 
 	// ----- lights -----
 
@@ -90,7 +88,7 @@ module intersection (
 		.blocked (pedestrian_blocked),
 		.red     (pedestrian_red    ),
 		.green   (pedestrian_green  ),
-		.active  (pedestrian_active )
+		.waiting (pedestrian_waiting)
 	);
 
 	trafficlight tl_up (
@@ -100,7 +98,7 @@ module intersection (
 		.blocked (        up_blocked),
 		.red     (        up_red    ),
 		.green   (        up_green  ),
-		.active  (        up_active )
+		.waiting (        up_waiting)
 	);
 
 	trafficlight tl_down (
@@ -110,7 +108,7 @@ module intersection (
 		.blocked (      down_blocked),
 		.red     (      down_red    ),
 		.green   (      down_green  ),
-		.active  (      down_active )
+		.waiting (      down_waiting)
 	);
 
 	trafficlight tl_turn (
@@ -120,6 +118,6 @@ module intersection (
 		.blocked (      turn_blocked),
 		.red     (      turn_red    ),
 		.green   (      turn_green  ),
-		.active  (      turn_active )
+		.waiting (      turn_waiting)
 	);
 endmodule

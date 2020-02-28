@@ -5,7 +5,7 @@ module trafficlight (
 	input blocked,
 	output red,
 	output green,
-	output active
+	output waiting
 );
 	reg [7:0] state;
 	reg [31:0] counter;
@@ -44,7 +44,7 @@ module trafficlight (
 		endcase
 	end
 
-	assign active = state != STATE_IDLE;
+	assign waiting = state == STATE_WAIT;
 	assign green = state == STATE_GREEN;
 	assign red = !green;
 endmodule
