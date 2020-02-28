@@ -27,10 +27,6 @@ module simplecover (
 		(first && !second) ##[+] (!first && second);
 	endproperty
 
-	property signal_pair(first, second);
-		(first && second);
-	endproperty
-
 	pair_pedestrian_up:   cover property (signal_seq(pedestrian_green, up_green));
 	pair_pedestrian_down: cover property (signal_seq(pedestrian_green, down_green));
 	pair_pedestrian_turn: cover property (signal_seq(pedestrian_green, turn_green));
@@ -43,7 +39,7 @@ module simplecover (
 	pair_down_up:         cover property (signal_seq(down_green, up_green));
 	pair_down_turn:       cover property (signal_seq(down_green, turn_green));
 
-	pair_turn_pedestrian: cover property (signal_pair(turn_green, pedestrian_green));   // if pedestrians are crossing then turn will always be green
+	pair_turn_pedestrian: cover property (signal_seq(turn_green, pedestrian_green));
 	pair_turn_up:         cover property (signal_seq(turn_green, up_green));
 	pair_turn_down:       cover property (signal_seq(turn_green, down_green));
 

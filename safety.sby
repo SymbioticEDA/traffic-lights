@@ -10,7 +10,7 @@ read -verific
 read -formal trafficlight.v
 read -formal intersection.v
 read -formal safety.sv
-prep -top safety
+prep -top intersection
 
 [files]
 trafficlight.v
