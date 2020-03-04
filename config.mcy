@@ -1,0 +1,33 @@
+[options]
+size 100
+tags COVERED UNCOVERED NOCHANGE FMGAP
+
+[script]
+read_verilog intersection.v trafficlight.v
+prep -top intersection
+
+[files]
+intersection.v
+trafficlight.v
+
+[logic]
+eq_okay = result("test_eq") == "PASS"
+
+if eq_okay:
+    tag("COVERED")
+else:
+    tag("FMGAP")
+
+[report]
+if tags("FMGAP"):
+    print("Found %d mutations exposing a formal gap!")
+if tags("COVERED")+tags("UNCOVERED"):
+    print("Coverage: %.2f%%" % (100.0*tags("COVERED")/(tags("COVERED")+tags("UNCOVERED"))))
+
+#[test test_sim]
+#expect PASS FAIL
+#run bash $PRJDIR/test_sim.sh
+
+[test test_eq]
+expect PASS FAIL
+run bash $PRJDIR/test_eq.sh
