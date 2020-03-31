@@ -28,20 +28,6 @@ module simplecover (
 	endproperty
 
 	pair_pedestrian_up:   cover property (signal_seq(pedestrian_green, up_green));
-	pair_pedestrian_down: cover property (signal_seq(pedestrian_green, down_green));
-	pair_pedestrian_turn: cover property (signal_seq(pedestrian_green, turn_green));
-
-	pair_up_pedestrian:   cover property (signal_seq(up_green, pedestrian_green));
-	pair_up_down:         cover property (signal_seq(up_green, down_green));
-	pair_up_turn:         cover property (signal_seq(up_green, turn_green));
-
-	pair_down_pedestrian: cover property (signal_seq(down_green, pedestrian_green));
-	pair_down_up:         cover property (signal_seq(down_green, up_green));
-	pair_down_turn:       cover property (signal_seq(down_green, turn_green));
-
-	pair_turn_pedestrian: cover property (signal_seq(turn_green, pedestrian_green));
-	pair_turn_up:         cover property (signal_seq(turn_green, up_green));
-	pair_turn_down:       cover property (signal_seq(turn_green, down_green));
 
 endmodule
 
