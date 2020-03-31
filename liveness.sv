@@ -25,17 +25,6 @@ module liveness (
 		pedestrian_button |-> ##[0:25] pedestrian_green
 	);
 
-	liveness_turn: assert property (
-		turn_sensor |-> ##[0:25] turn_green
-	);
-
-	liveness_up: assert property (
-		##[1:25] up_green
-	);
-
-	liveness_down: assert property (
-		##[1:25] down_green
-	);
 endmodule
 
 module intersection_invariants (
