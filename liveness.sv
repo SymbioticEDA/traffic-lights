@@ -27,23 +27,6 @@ module liveness (
 
 endmodule
 
-module intersection_invariants (
-	input clock,
-	input reset,
-
-	input pedestrian_green,
-	input up_green,
-	input down_green,
-	input turn_green
-);
-	default clocking @(posedge clock); endclocking
-	default disable iff (reset);
-
-	excl_pedestrian_up:   assert property (!(pedestrian_green &&   up_green));
-	excl_pedestrian_down: assert property (!(pedestrian_green && down_green));
-	excl_turn_down:       assert property (!(      turn_green && down_green));
-endmodule
-
 module trafficlight_invariants (
 	input clock,
 	input reset,
@@ -64,5 +47,4 @@ module trafficlight_invariants (
 endmodule
 
 bind intersection liveness checker_inst (.*);
-bind intersection intersection_invariants invariants_inst (.*);
 bind trafficlight trafficlight_invariants invariants_inst (.*);
