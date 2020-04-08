@@ -22,12 +22,8 @@ module safety (
 	default disable iff (reset);
 
 	safe_pedestrian_up:   assert property (pedestrian_green |-> !  up_green);
-	safe_pedestrian_down: assert property (pedestrian_green |-> !down_green);
-	safe_turn_down:       assert property (      turn_green |-> !down_green);
+    // add your other safety assertions here
 
-	safe_up_pedestrian:   assert property (  up_green |-> !pedestrian_green);
-	safe_down_pedestrian: assert property (down_green |-> !pedestrian_green);
-	safe_down_turn:       assert property (down_green |-> !      turn_green);
 endmodule
 
 bind intersection safety checker_inst (.*);
